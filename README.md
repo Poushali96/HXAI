@@ -1,52 +1,80 @@
-# HXAI
-HXAI: Privacy Preserving Hierarchical Explainable Artificial Intelligence
+### Files
 
+- **HXAI.ipynb**  
+  Implements the full HXAI pipeline using **synthetically generated household energy data**.  
+  This notebook is used for:
+  - Controlled evaluation of privacy–utility trade-offs  
+  - Privacy budget negotiation experiments  
+  - System-level behavior analysis under repeated queries  
 
+- **HXAIREAL.ipynb**  
+  Implements HXAI using **only publicly available real-world datasets**.  
+  This notebook reproduces the main experimental results reported on real data, including:
+  - Zonal explanation aggregation  
+  - Differential privacy noise injection  
+  - Explanation utility, ranking stability, and semantic robustness analysis  
 
-# README: Experiment Section for HXAI
+- **household_device_usage.csv**  
+  A **synthetic energy consumption dataset** generated solely for experimental evaluation.  
+  It does not contain real household data or personally identifiable information.
 
-## Overview
-This section evaluates the Hierarchical Explainable AI (HXAI) framework's ability to balance privacy, utility, and explainability in smart home energy management. The experiments assess how privacy-preserving mechanisms, including differential privacy, affect both local and zonal analyses and explore how specific and multiple queries are handled while safeguarding household privacy.
+- **LICENSE**  
+  Open-source license for code reuse.
 
-## Dataset
-- **Households:** 50 smart homes, each with 7 appliances.
-- **Appliances:** Heating, Fridge, Fan, Oven, Washing Machine, Dryer, Cooler.
-- **Data Points:** 100 time points per household.
-- **Energy Consumption Data:** Generated using utility models for actual appliance service ranges.
+---
 
-## Experimental Setup
-The experiments are designed to demonstrate:
-1. **Local (End) Level Analysis:** Provide households with noise-free SHAP explanations of their energy consumption.
-2. **Zonal (Edge) Level Analysis:** Evaluate how privacy-preserving Laplace noise affects zonal energy consumption insights for electricity providers.
-3. **Specific and Multiple Query Handling:** Assess the privacy-utility trade-offs for individual and aggregated queries, showing the impact of repeated queries on privacy leakage.
+## Data Sources
 
-## Key Experiments
+### Synthetic Data
+Synthetic household energy consumption data are generated programmatically to support controlled experimentation, system-level evaluation, and privacy–utility trade-off analysis.  
+No real households, users, or personal data are represented.
 
-### 1. Local (End) Level Analysis:
-- Households receive detailed SHAP-based explanations, helping them optimize appliance usage to reduce energy costs.
-- For example, a washing machine's SHAP values can show a wide range of energy impact depending on usage, helping the household schedule it during off-peak hours.
+### Real Data (Publicly Available)
+All real-data experiments rely exclusively on **open, publicly available benchmark datasets**, commonly used in energy and time-series research:
 
-### 2. Zonal (Edge) Level Analysis:
-- Privacy-preserving noise is applied to aggregate zonal data to protect household-level details while maintaining the utility for energy providers.
-- SHAP reports are generated with and without noise, demonstrating minimal utility loss despite privacy protections.
+- **UCI Appliances Energy Prediction Dataset**  
+  Hourly residential energy consumption with environmental and temporal features.
 
-### 3. Specific Query Handling:
-- Specific queries demand higher utility and thus a larger privacy budget compared to general queries.
-- Example: A query such as "What percentage reduction in washing machine and cooler consumption occurs after a price drop in a 30 km radius?" aggregates data across households. The noisy SHAP report provided ensures that individual households' data is anonymized, protecting their privacy.
-- The experiment shows that while privacy-preserving noise affects the precise values of energy consumption contributions, the general trends and rankings of appliance usage remain intact, allowing the energy provider to make informed decisions without compromising individual privacy.
+- **UCI Individual Household Electric Power Consumption Dataset**  
+  Large-scale, minute-level household electricity usage data spanning multiple years.
 
-### 4. Multiple Query Handling:
-- The experiment simulates multiple specific queries sent to households over time, demonstrating how privacy leakage accumulates with each query.
-- As more specific queries are made (e.g., repeated requests for appliance-level data), the cumulative privacy leakage increases non-linearly. Once the leakage exceeds the privacy threshold (ε), households stop responding to further queries, preserving their privacy.
-- This emphasizes the importance of managing query frequency to balance privacy and utility. The system is designed to block further queries once a household’s privacy budget is exhausted, preventing excessive data exposure.
+- **UCI Bike Sharing Dataset (Hourly)**  
+  Urban demand dataset with moderate feature correlation, used to test generalization beyond household energy data.
 
-### 5. Privacy-Utility Trade-off:
-- The experiments explore how varying the privacy budget (ε) impacts the accuracy of energy predictions.
-- A negotiation process allows for a balance between privacy and utility. For instance, ε = 6.73 is found to provide an optimal balance, where the energy provider retains useful insights without breaching household privacy.
-- The HXAI framework enables energy providers to implement appliance upgrade schemes based on zonal insights, driving energy efficiency without compromising individual privacy.
+These datasets contain no personally identifiable information and are released for research purposes.  
+Dataset access links, preprocessing steps, and feature construction are fully documented inside **HXAIREAL.ipynb**.
 
-## Conclusion
-The HXAI framework successfully balances privacy and utility by using differential privacy in response to both specific and multiple queries. The results demonstrate that privacy-preserving mechanisms can protect individual households’ data while still providing actionable insights for grid management and energy cost reductions.
+---
 
+## Reproducibility
 
+All experiments reported in the paper can be reproduced using the notebooks provided in this repository.
 
+Each notebook:
+- Is fully self-contained  
+- Includes preprocessing, model training, explanation generation, and evaluation  
+- Produces the figures and metrics reported in the paper  
+
+Random seeds are fixed where applicable to ensure consistent and reproducible results.
+
+---
+
+## Ethical Considerations
+
+HXAI is designed with privacy preservation as a first-class objective.  
+Raw household-level data and noise-free explanations are never shared externally within the framework. Differential privacy mechanisms are explicitly enforced to bound information leakage under repeated and adaptive queries.
+
+This repository contains **no sensitive data** and introduces **no new data collection mechanisms**.
+
+---
+
+## Anonymous Release Note
+
+This repository is shared for **anonymous peer review only**.  
+All identifying information has been removed or anonymized in compliance with double-blind review policies.
+
+---
+
+## Questions
+
+For questions related to the methodology or reproduction of results, please refer to the accompanying paper.
